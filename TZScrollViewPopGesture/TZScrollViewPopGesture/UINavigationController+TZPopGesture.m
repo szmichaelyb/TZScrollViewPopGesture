@@ -24,11 +24,11 @@
 
 - (void)tzPop_viewWillAppear:(BOOL)animated {
     [self tzPop_viewWillAppear:animated];
-    // 只是为了触发tz_PopDelegate的get方法，获取到原始的interactivePopGestureRecognizer的delegate
-    [self.tz_popDelegate class];
-    // 获取导航栏的代理
-    [self.tz_naviDelegate class];
-    self.delegate = self;
+    /// 只是为了触发tz_PopDelegate的get方法，获取到原始的interactivePopGestureRecognizer的delegate
+    [self tz_popDelegate];
+    /// 获取导航栏的代理
+    [self tz_naviDelegate];
+    [self setDelegate:self];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.delegate = self.tz_naviDelegate;
     });
@@ -38,7 +38,7 @@
     id tz_popDelegate = objc_getAssociatedObject(self, _cmd);
     if (!tz_popDelegate) {
         tz_popDelegate = self.interactivePopGestureRecognizer.delegate;
-        objc_setAssociatedObject(self, _cmd, tz_popDelegate, OBJC_ASSOCIATION_ASSIGN);
+        objc_setAssociatedObject(self, _cmd, tz_popDelegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return tz_popDelegate;
 }
@@ -48,7 +48,7 @@
     if (!tz_naviDelegate) {
         tz_naviDelegate = self.delegate;
         if (tz_naviDelegate) {
-            objc_setAssociatedObject(self, _cmd, tz_naviDelegate, OBJC_ASSOCIATION_ASSIGN);
+            objc_setAssociatedObject(self, _cmd, tz_naviDelegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         }
     }
     return tz_naviDelegate;
