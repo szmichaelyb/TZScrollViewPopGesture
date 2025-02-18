@@ -147,7 +147,7 @@
         pan.maximumNumberOfTouches = 1;
         pan.delegate = self.navigationController;
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-        objc_setAssociatedObject(self, _cmd, pan, OBJC_ASSOCIATION_ASSIGN);
+        objc_setAssociatedObject(self, _cmd, pan, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return pan;
 }
